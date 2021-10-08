@@ -18,7 +18,7 @@ func postMsg(c *gin.Context)  {
 	//name := c.PostForm("name")//获取表单数据
 	name := c.DefaultPostForm("name", "lzc")//获取表单数据，并有默认值
 
-	form, b := c.GetPostForm("name")
+	form, b := c.GetPostForm("name")//判断是否存在
 	fmt.Println(form, b)
 
 	c.JSON(http.StatusOK, gin.H{
