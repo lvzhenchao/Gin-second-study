@@ -16,7 +16,7 @@ func main()  {
 			c.String(http.StatusBadRequest, "文件上传失败")
 		}
 
-		files := form.File["file_key"]//所有的文件
+		files := form.File["file_key"]//所有的文件名称
 
 		//存储路径地址
 		dst := "E:/GoPath/src/"
