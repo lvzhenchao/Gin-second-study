@@ -14,9 +14,11 @@ type ResGroup struct {
 
 func main()  {
 	router := gin.Default()
+
+	//路由分组1
+	v1 := router.Group("/v1")//路由分组：1级路径
 	{
 
-		v1 := router.Group("/v1")//路由分组：1级路径
 		r := v1.Group("/user")//路由分组：2级路径
 		r.GET("/login", login)//请求路径：/v1/user/login
 
@@ -25,6 +27,7 @@ func main()  {
 		r2.GET("/detail", detail)//请求路径：/v1/user/showInfo/detail
 	}
 
+	//路由分组2
 	v2 := router.Group("/v2")
 	{
 		v2.GET("/other", other)//v2/other
