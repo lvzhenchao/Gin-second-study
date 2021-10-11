@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	r.GET("/GetOtherData", func(c *gin.Context) {
@@ -16,7 +16,7 @@ func main()  {
 		response, err := http.Get(url)
 
 		if err != nil || response.StatusCode != http.StatusOK {
-			c.Status(http.StatusServiceUnavailable)//应答client
+			c.Status(http.StatusServiceUnavailable) //应答client
 
 			return
 		}

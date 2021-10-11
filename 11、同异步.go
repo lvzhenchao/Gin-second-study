@@ -14,7 +14,7 @@ import (
 //特别注意：可以在中间件或处理程序中启动新的Go协程
 //特别注意：需要使用上下文的副本【子进程的上下文是对主进程上下文的拷贝，不会影响主进程的上下文】
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	r.GET("/sync", func(c *gin.Context) {
@@ -23,9 +23,9 @@ func main()  {
 	})
 
 	r.GET("/async", func(c *gin.Context) {
-		for i:= 0; i<6; i++ {
+		for i := 0; i < 6; i++ {
 
-			cCp := c.Copy()//特别注意：需要使用上下文的副本
+			cCp := c.Copy() //特别注意：需要使用上下文的副本
 			go async(cCp, i)
 
 		}
@@ -36,15 +36,13 @@ func main()  {
 }
 
 func async(cp *gin.Context, i int) {
-	fmt.Println("第"+strconv.Itoa(i)+"个go进程开始执行："+cp.Request.URL.Path)
-	time.Sleep(time.Second*3)
-	fmt.Println("第"+strconv.Itoa(i)+"个go进程结束执行："+cp.Request.URL.Path)
+	fmt.Println("第" + strconv.Itoa(i) + "个go进程开始执行：" + cp.Request.URL.Path)
+	time.Sleep(time.Second * 3)
+	fmt.Println("第" + strconv.Itoa(i) + "个go进程结束执行：" + cp.Request.URL.Path)
 }
 
-
-
 func sync(c *gin.Context) {
-	println("开始执行同步任务："+c.Request.URL.Path)
-	time.Sleep(time.Second*3)
+	println("开始执行同步任务：" + c.Request.URL.Path)
+	time.Sleep(time.Second * 3)
 	println("同步任务执行完毕！")
 }

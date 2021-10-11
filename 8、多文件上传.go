@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	r.POST("/upload", func(c *gin.Context) {
@@ -16,12 +16,12 @@ func main()  {
 			c.String(http.StatusBadRequest, "文件上传失败")
 		}
 
-		files := form.File["file_key"]//所有的文件名称
+		files := form.File["file_key"] //所有的文件名称
 
 		//存储路径地址
 		dst := "E:/GoPath/src/"
 		for _, file := range files {
-			err = c.SaveUploadedFile(file, dst+file.Filename)//存储文件
+			err = c.SaveUploadedFile(file, dst+file.Filename) //存储文件
 			if err != nil {
 				c.String(http.StatusBadRequest, "文件上传失败")
 			}

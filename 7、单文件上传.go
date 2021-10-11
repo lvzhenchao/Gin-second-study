@@ -8,7 +8,7 @@ import (
 
 //附件上传
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	r.POST("/upload", func(c *gin.Context) {
@@ -21,7 +21,7 @@ func main()  {
 
 		//存储路径地址
 		dst := "E:/GoPath/src/"
-		err = c.SaveUploadedFile(file, dst+file.Filename)//存储文件
+		err = c.SaveUploadedFile(file, dst+file.Filename) //存储文件
 		if err != nil {
 			c.String(http.StatusBadRequest, "文件上传失败")
 		}

@@ -5,20 +5,20 @@ import (
 	"net/http"
 )
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	//json格式输出
 	r.GET("/json", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"html" : "<b>hello,gin框架</b>",
+			"html": "<b>hello,gin框架</b>",
 		})
 	})
 
 	//原样html输出
 	r.GET("/html", func(c *gin.Context) {
 		c.PureJSON(http.StatusOK, gin.H{
-			"html" : "<b>hello,gin框架</b>",
+			"html": "<b>hello,gin框架</b>",
 		})
 	})
 
@@ -26,8 +26,8 @@ func main()  {
 	r.GET("/xml", func(c *gin.Context) {
 		type Message struct {
 			Name string
-			Msg string
-			Age int
+			Msg  string
+			Age  int
 		}
 		info := Message{}
 		info.Name = "吕振超"
@@ -39,7 +39,7 @@ func main()  {
 	//yml形式
 	r.GET("/yaml", func(c *gin.Context) {
 		c.YAML(http.StatusOK, gin.H{
-			"mes": "gin框架",
+			"mes":  "gin框架",
 			"code": 200,
 		})
 	})

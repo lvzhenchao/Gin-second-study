@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	//一般重定向
@@ -24,7 +24,7 @@ func main()  {
 	r.GET("/TestRedirect", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"code": http.StatusOK,
-			"msg": "TestRedirect重定向响应成功",
+			"msg":  "TestRedirect重定向响应成功",
 		})
 	})
 

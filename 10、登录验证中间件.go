@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	r.Use(AuthMiddleware())
@@ -15,7 +15,7 @@ func main()  {
 	r.GET("/login", func(c *gin.Context) {
 
 		//这里获取登录的用户，它是由basicAuth中间件获取的
-		user := c.MustGet(gin.AuthUserKey).(string)//断言
+		user := c.MustGet(gin.AuthUserKey).(string) //断言
 
 		c.JSON(http.StatusOK, "登录成功! "+"欢迎:"+user)
 	})
@@ -25,9 +25,9 @@ func main()  {
 
 func AuthMiddleware() gin.HandlerFunc {
 	//初始化用户
-	accounts := gin.Accounts{//静态的账号
-		"admin" : "adminpw",
-		"system" : "systempw",
+	accounts := gin.Accounts{ //静态的账号
+		"admin":  "adminpw",
+		"system": "systempw",
 	}
 
 	//动态添加账号
