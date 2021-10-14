@@ -42,7 +42,7 @@ func main()  {
 // @Router /register [post]
 func register(c *gin.Context) {
 	var user User
-	//err := c.Bind(&user)
+	//err := c.Bind(&user)//只支持json和xml
 	err := c.BindQuery(&user)
 	if err != nil {
 		fmt.Println("绑定错误：", err)
