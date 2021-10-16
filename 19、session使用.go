@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+//示例：https://github.com/gin-contrib/sessions
+
 var sessionName string
 var sessionValue string
 
