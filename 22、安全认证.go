@@ -25,7 +25,7 @@ func main()  {
 	r.Run(":9090")
 }
 
-func authMiddleware() gin.HandlerFunc {
+func authMiddleware() gin.HandlerFunc {//静态配置
 	return func(c *gin.Context) {
 		gate := restgate.New(
 			"X-Auth-key",
