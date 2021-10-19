@@ -40,7 +40,7 @@ func main()  {
 	r := gin.Default()
 
 	r.GET("/logrus", func(c *gin.Context) {
-		log.WithFields(logrus.Fields{
+		log.WithFields(logrus.Fields{//里面的值都可以自己定义
 			"url": c.Request.RequestURI,
 			"method": c.Request.Method,
 			"params": c.Query("name"),
