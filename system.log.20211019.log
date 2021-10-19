@@ -1,0 +1,7 @@
+{"IP":"127.0.0.1","level":"info","method":"GET","msg":"","params":"","status_code":200,"time":"2021-10-19 22:55:25","url":"/logrus2"}
+{"IP":"127.0.0.1","level":"info","method":"GET","msg":"","params":"","status_code":200,"time":"2021-10-19 22:55:32","url":"/logrus2"}
+{"IP":"127.0.0.1","level":"info","method":"GET","msg":"","params":"","status_code":404,"time":"2021-10-19 22:55:32","url":"/images/icons/gear.png"}
+{"IP":"127.0.0.1","level":"info","method":"GET","msg":"","params":"","status_code":200,"time":"2021-10-19 22:55:35","url":"/logrus2"}
+{"IP":"127.0.0.1","level":"info","method":"GET","msg":"","params":"","status_code":404,"time":"2021-10-19 22:55:35","url":"/images/icons/gear.png"}
+{"IP":"127.0.0.1","level":"info","method":"GET","msg":"","params":"","status_code":200,"time":"2021-10-19 22:55:35","url":"/logrus2"}
+{"IP":"127.0.0.1","level":"info","method":"GET","msg":"","params":"","status_code":404,"time":"2021-10-19 22:55:35","url":"/images/icons/gear.png"}

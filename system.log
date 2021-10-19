@@ -1,0 +1,7 @@
+time="2021-10-19T22:55:25+08:00" level=info IP=127.0.0.1 method=GET params= status_code=200 url=/logrus2
+time="2021-10-19T22:55:32+08:00" level=info IP=127.0.0.1 method=GET params= status_code=200 url=/logrus2
+time="2021-10-19T22:55:32+08:00" level=info IP=127.0.0.1 method=GET params= status_code=404 url=/images/icons/gear.png
+time="2021-10-19T22:55:35+08:00" level=info IP=127.0.0.1 method=GET params= status_code=200 url=/logrus2
+time="2021-10-19T22:55:35+08:00" level=info IP=127.0.0.1 method=GET params= status_code=404 url=/images/icons/gear.png
+time="2021-10-19T22:55:35+08:00" level=info IP=127.0.0.1 method=GET params= status_code=200 url=/logrus2
+time="2021-10-19T22:55:35+08:00" level=info IP=127.0.0.1 method=GET params= status_code=404 url=/images/icons/gear.png
