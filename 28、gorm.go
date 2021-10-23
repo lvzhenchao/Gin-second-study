@@ -56,6 +56,18 @@ func main() {
 }
 
 func gormDelete(c *gin.Context) {
+	//=====捕获异常=====
+	defer func() {
+		err := recover()
+		if err != nil {
+			gormResponse.Code = http.StatusBadRequest
+			gormResponse.Message = "错误"
+			gormResponse.Data = err
+			c.JSON(http.StatusOK, gormResponse)
+		}
+	}()
+
+	//=================
 	number := c.Query("number")
 	//1、先查询
 	var count int64
@@ -84,6 +96,19 @@ func gormDelete(c *gin.Context) {
 }
 
 func gormUpdate(c *gin.Context) {
+	//=====捕获异常=====
+	defer func() {
+		err := recover()
+		if err != nil {
+			gormResponse.Code = http.StatusBadRequest
+			gormResponse.Message = "错误"
+			gormResponse.Data = err
+			c.JSON(http.StatusOK, gormResponse)
+		}
+	}()
+
+	//=================
+
 	var p Product
 	err := c.Bind(&p)
 	if err != nil{
@@ -121,6 +146,19 @@ func gormUpdate(c *gin.Context) {
 }
 
 func gormGetMulData(c *gin.Context) {
+	//=====捕获异常=====
+	defer func() {
+		err := recover()
+		if err != nil {
+			gormResponse.Code = http.StatusBadRequest
+			gormResponse.Message = "错误"
+			gormResponse.Data = err
+			c.JSON(http.StatusOK, gormResponse)
+		}
+	}()
+
+	//=================
+
 	category := c.Query("category")
 	products := make([]Product, 10)
 	tx := gormDB.Where("category=?", category).Find(&products).Limit(10)
@@ -139,6 +177,19 @@ func gormGetMulData(c *gin.Context) {
 }
 
 func gormGetData(c *gin.Context) {
+	//=====捕获异常=====
+	defer func() {
+		err := recover()
+		if err != nil {
+			gormResponse.Code = http.StatusBadRequest
+			gormResponse.Message = "错误"
+			gormResponse.Data = err
+			c.JSON(http.StatusOK, gormResponse)
+		}
+	}()
+
+	//=================
+
 	number := c.Query("number")
 	product := Product{}
 	tx := gormDB.Where("number=?", number).First(&product)
@@ -157,6 +208,20 @@ func gormGetData(c *gin.Context) {
 }
 
 func gormInsertData(c *gin.Context) {
+	//=====捕获异常=====
+	defer func() {
+		err := recover()
+		if err != nil {
+			gormResponse.Code = http.StatusBadRequest
+			gormResponse.Message = "错误"
+			gormResponse.Data = err
+			c.JSON(http.StatusOK, gormResponse)
+		}
+	}()
+
+	//=================
+
+
 	var p Product
 	err := c.Bind(&p)
 	if err != nil{
