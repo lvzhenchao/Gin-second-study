@@ -54,7 +54,7 @@ func main()  {
 
 	//数据库的增删改查
 	r.POST("xorm/insert", xormInsertData)//新增数据
-	r.GET("xorm/get", xormGetData)//单挑数据
+	r.GET("xorm/get", xormGetData)//获取单条数据
 
 
 	r.Run(":9090")
