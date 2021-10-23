@@ -48,8 +48,70 @@ func main() {
 
 	r.POST("gorm/insert", gormInsertData)
 	r.GET("gorm/get", gormGetData)
+	r.GET("gorm/mulget", gormGetMulData)
+	r.PUT("gorm/update", gormUpdate)//修改数据
+	r.DELETE("gorm/delete", gormDelete)//删除数据
 
 	r.Run(":9090")
+}
+
+func gormDelete(c *gin.Context) {
+
+}
+
+func gormUpdate(c *gin.Context) {
+	var p Product
+	err := c.Bind(&p)
+	if err != nil{
+		gormResponse.Code = http.StatusBadRequest
+		gormResponse.Message = "参数错误"
+		gormResponse.Data = err
+		c.JSON(http.StatusOK, gormResponse)
+		return
+	}
+
+	//1、先查询
+	var count int64
+	gormDB.Model(&Product{}).Where("number=?", p.Number).Count(&count)
+	if count <= 0 {
+		gormResponse.Code = http.StatusBadRequest
+		gormResponse.Message = "查询错误"
+		gormResponse.Data = "error"
+		c.JSON(http.StatusOK, gormResponse)
+		return
+	}
+	//2、更新
+	tx := gormDB.Model(&Product{}).Where("number=?", p.Number).Updates(&p)
+	if tx.RowsAffected >0 {
+		gormResponse.Code = http.StatusOK
+		gormResponse.Message = "更新成功"
+		gormResponse.Data = "ok"
+		c.JSON(http.StatusOK, gormResponse)
+		return
+	}
+	fmt.Printf("更新错误：err:%v\n", tx)
+	gormResponse.Code = http.StatusBadRequest
+	gormResponse.Message = "更新错误"
+	gormResponse.Data = tx
+	c.JSON(http.StatusOK, gormResponse)
+}
+
+func gormGetMulData(c *gin.Context) {
+	category := c.Query("category")
+	products := make([]Product, 10)
+	tx := gormDB.Where("category=?", category).Find(&products).Limit(10)
+	if tx.Error != nil {
+		gormResponse.Code = http.StatusBadRequest
+		gormResponse.Message = "查询错误"
+		gormResponse.Data = tx.Error
+		c.JSON(http.StatusOK, gormResponse)
+		return
+	}
+
+	gormResponse.Code = http.StatusOK
+	gormResponse.Message = "查询成功"
+	gormResponse.Data = products
+	c.JSON(http.StatusOK, gormResponse)
 }
 
 func gormGetData(c *gin.Context) {
