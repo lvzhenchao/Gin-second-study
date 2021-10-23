@@ -55,9 +55,95 @@ func main()  {
 	//数据库的增删改查
 	r.POST("xorm/insert", xormInsertData)//新增数据
 	r.GET("xorm/get", xormGetData)//获取单条数据
+	r.GET("xorm/mulget", xormGetMulData)//获取单条数据
+	r.PUT("xorm/update", xormUpdate)//修改数据
+	r.DELETE("xorm/delete", xormDelete)//删除数据
+
 
 
 	r.Run(":9090")
+}
+
+func xormDelete(c *gin.Context) {
+	stuNum := c.Query("stu_num")
+	var stus []Stu
+	err := x.Where("stu_num=?", stuNum).Find(&stus)
+	if err != nil || len(stus) <= 0 {
+		xormResponse.Code = http.StatusBadRequest
+		xormResponse.Message = "数据不存在"
+		xormResponse.Data = "error"
+		c.JSON(http.StatusOK, xormResponse)
+		return
+	}
+
+	affected, err := x.Where("stu_num=?", stuNum).Delete(&Stu{})
+	if err != nil || affected <= 0 {
+		xormResponse.Code = http.StatusBadRequest
+		xormResponse.Message = "删除失败"
+		xormResponse.Data = err
+		c.JSON(http.StatusOK, xormResponse)
+		return
+	}
+	xormResponse.Code = http.StatusOK
+	xormResponse.Message = "删除成功"
+	xormResponse.Data = "OK"
+	c.JSON(http.StatusOK, xormResponse)
+	fmt.Println(affected)//打印结果
+}
+
+func xormUpdate(c *gin.Context) {
+	var s Stu
+	err := c.Bind(&s)
+	if err != nil{
+		xormResponse.Code = http.StatusBadRequest
+		xormResponse.Message = "参数错误"
+		xormResponse.Data = "error"
+		c.JSON(http.StatusOK, xormResponse)
+		return
+	}
+
+	//先查找
+	var stus []Stu
+	err = x.Where("stu_num=?", s.StuNum).Find(&stus)
+	if err != nil || len(stus) <= 0 {
+		xormResponse.Code = http.StatusBadRequest
+		xormResponse.Message = "数据不存在"
+		xormResponse.Data = "error"
+		c.JSON(http.StatusOK, xormResponse)
+		return
+	}
+	//再修改
+	affected, err := x.Where("stu_num=?", s.StuNum).Update(&Stu{Name:s.Name,Age:s.Age})
+	if err != nil || affected <= 0 {
+		xormResponse.Code = http.StatusBadRequest
+		xormResponse.Message = "修改失败"
+		xormResponse.Data = err
+		c.JSON(http.StatusOK, xormResponse)
+		return
+	}
+	xormResponse.Code = http.StatusOK
+	xormResponse.Message = "更新成功"
+	xormResponse.Data = "OK"
+	c.JSON(http.StatusOK, xormResponse)
+	fmt.Println(affected)//打印结果
+}
+
+func xormGetMulData(c *gin.Context) {
+	name := c.Query("name")
+	var stus []Stu
+	err := x.Where("name=?", name).And("age>10").Limit(10, 0).Asc("age").Find(&stus)
+	if err != nil {
+		xormResponse.Code = http.StatusBadRequest
+		xormResponse.Message = "查询错误"
+		xormResponse.Data = "error"
+		c.JSON(http.StatusOK, xormResponse)
+		return
+	}
+	xormResponse.Code = http.StatusOK
+	xormResponse.Message = "查询成功"
+	xormResponse.Data = stus
+	c.JSON(http.StatusOK, xormResponse)
+
 }
 
 func xormGetData(c *gin.Context) {
