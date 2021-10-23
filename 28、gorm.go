@@ -56,7 +56,31 @@ func main() {
 }
 
 func gormDelete(c *gin.Context) {
-
+	number := c.Query("number")
+	//1、先查询
+	var count int64
+	gormDB.Model(&Product{}).Where("number=?", number).Count(&count)
+	if count <= 0 {
+		gormResponse.Code = http.StatusBadRequest
+		gormResponse.Message = "查询错误"
+		gormResponse.Data = "error"
+		c.JSON(http.StatusOK, gormResponse)
+		return
+	}
+	//2、删除
+	tx := gormDB.Where("number=?", number).Delete(&Product{})
+	if tx.RowsAffected >0 {
+		gormResponse.Code = http.StatusOK
+		gormResponse.Message = "删除成功"
+		gormResponse.Data = "ok"
+		c.JSON(http.StatusOK, gormResponse)
+		return
+	}
+	fmt.Printf("删除错误：err:%v\n", tx)
+	gormResponse.Code = http.StatusBadRequest
+	gormResponse.Message = "删除错误"
+	gormResponse.Data = tx
+	c.JSON(http.StatusOK, gormResponse)
 }
 
 func gormUpdate(c *gin.Context) {
