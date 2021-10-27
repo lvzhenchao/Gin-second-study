@@ -1,0 +1,11 @@
+server:
+  port: 9988
+datasource:
+  driverName: mysql
+  host: 192.168.33.10
+  port: "3306"
+  database: ginsql
+  username: root
+  password: BspKCZLRZWeHeaTR
+  charset: utf8
+  loc: Asia/Shanghai
