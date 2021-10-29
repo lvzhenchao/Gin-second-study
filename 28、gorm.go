@@ -246,4 +246,57 @@ func gormInsertData(c *gin.Context) {
 	gormResponse.Message = "写入失败"
 	gormResponse.Data = tx
 	c.JSON(http.StatusOK, gormResponse)
+
+
+	//db := gormDB
+	//type result struct {
+	//	Name  string
+	//	Email string
+	//}
+	//db.Model(&User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result{})
+	//// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
+	//
+	//rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
+	//for rows.Next() {
+	//	...
+	//}
+	//
+	//db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
+	//
+	//// 带参数的多表连接
+	//db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
+
+	//Method Chaining，Gorm 实现了链式操作接口，所以你可以把代码写成这样
+	//每个方法都会返回tx
+	//先创建一个查询
+	//tx := Db.Model(&xy).Where("ads_id = ? and status = 1", adsID)
+	//
+	////分类
+	//if adsID > 0 {
+	//	tx = tx.Where("ads_id = ?", adsID)
+	//}
+	////按照创建时间筛选
+	//if createTime > 0 {
+	//	tx = tx.Order("create_time desc")
+	//} else {
+	//	//按照活动时间筛选
+	//	tx = tx.Order("date_timestamp asc")
+	//}
+	//
+	//if gender > 0 {
+	//	tx = tx.Where("gender = ?", gender)
+	//}
+	//
+	//if cityName != "" {
+	//	tx = tx.Where("city_name = ?", cityName)
+	//}
+	//tx = tx.Preload("TopicImagesList")
+	//tx.Find(&TopicList).RecordNotFound()
+
+
+
+
+
 }
+
+
