@@ -1,6 +1,9 @@
 package middleware
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
 
 //跨域中间件
 //(跨域，指的是浏览器不能执行其他网站的脚本。
