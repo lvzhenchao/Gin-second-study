@@ -2,6 +2,7 @@ package main
 
 import (
 	"Gin-second-study/Gin_App_Api/common"
+	"Gin-second-study/Gin_App_Api/route"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -15,9 +16,17 @@ import (
 func main()  {
 	IninConfig()//加载配置项
 	common.InitDB()//初始化数据库（只初始化一次）
-	r :=gin.Default()
+	r := gin.Default()
+
+	route.CollectRouter(r)
 
 	port := viper.GetString("server.port")
+	if port != "" {
+		r.Run(":"+port)
+	} else {
+		r.Run()//默认8080
+	}
+
 	r.Run(":"+port)
 }
 
