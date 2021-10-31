@@ -14,16 +14,16 @@ import (
 )
 
 var (
-	err3 error
+	err3          error
 	eccPrivateKey *ecdsa.PrivateKey
-	eccPublicKey *ecdsa.PublicKey
+	eccPublicKey  *ecdsa.PublicKey
 )
 
 type EcdsaUser struct {
-	Id string `json:"id"`
-	Name string `json:"name"`
+	Id        string `json:"id"`
+	Name      string `json:"name"`
 	Telephone string `json:"telephone"`
-	Password string `json:"password"`
+	Password  string `json:"password"`
 }
 
 type EcdsaClaims struct {
@@ -31,15 +31,15 @@ type EcdsaClaims struct {
 	jwt.StandardClaims
 }
 
-func init()  {
+func init() {
 	eccPrivateKey, eccPublicKey, err3 = getEcdsaKey(2)
-	if err3!= nil {
+	if err3 != nil {
 		panic(err3)
 		return
 	}
 }
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	r.POST("/getToken3", func(c *gin.Context) {
@@ -58,13 +58,13 @@ func main()  {
 		}
 		c.JSON(http.StatusOK, gin.H{
 			"code": http.StatusOK,
-			"msg": "授权成功",
+			"msg":  "授权成功",
 			"data": token,
 		})
 	})
 
 	r.POST("/checkToken3", ecdsaTokenMiddle(), func(c *gin.Context) {
-		c.JSON(http.StatusOK,"证书有效")
+		c.JSON(http.StatusOK, "证书有效")
 	})
 
 	r.Run(":9090")
@@ -77,9 +77,9 @@ func ecdsaTokenMiddle() gin.HandlerFunc {
 		//获取头部
 		tokenString := c.GetHeader("Authorization")
 		if tokenString == "" || !strings.HasPrefix(tokenString, auth+":") {
-			c.JSON(http.StatusUnauthorized,gin.H{
+			c.JSON(http.StatusUnauthorized, gin.H{
 				"code": http.StatusUnauthorized,
-				"msg": "前缀错误+token无效",
+				"msg":  "前缀错误+token无效",
 			})
 			c.Abort()
 			return
@@ -87,15 +87,15 @@ func ecdsaTokenMiddle() gin.HandlerFunc {
 
 		index := strings.Index(tokenString, auth+":") //找到token前缀对应的位置
 		tokenString = tokenString[index+len(auth)+1:] //获取真实的token(开始位置为：索引开始的位置+关键字符的长度+1(:的长度为1))
-		claims, err := ecdsaParseToke(tokenString)//解析
-		if err != nil {//解析错误或者过期等
-			c.AbortWithStatusJSON(http.StatusUnauthorized,err)
+		claims, err := ecdsaParseToke(tokenString)    //解析
+		if err != nil {                               //解析错误或者过期等
+			c.AbortWithStatusJSON(http.StatusUnauthorized, err)
 			c.Abort()
 			return
 		}
-		claimsValue := claims.(jwt.MapClaims)//断言
+		claimsValue := claims.(jwt.MapClaims) //断言
 		if claimsValue["user_id"] == nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized,"id不存在")
+			c.AbortWithStatusJSON(http.StatusUnauthorized, "id不存在")
 			c.Abort()
 			return
 		}
@@ -103,9 +103,9 @@ func ecdsaTokenMiddle() gin.HandlerFunc {
 		var u EcdsaUser
 		c.Bind(&u)
 		if u.Id != claimsValue["user_id"] {
-			c.JSON(http.StatusUnauthorized,gin.H{
+			c.JSON(http.StatusUnauthorized, gin.H{
 				"code": http.StatusUnauthorized,
-				"msg": "用户不存在",
+				"msg":  "用户不存在",
 			})
 			c.Abort()
 			return
@@ -124,14 +124,14 @@ func ecdsaParseToke(tokenString string) (interface{}, error) {
 		}
 		return eccPublicKey, nil
 	})
-	if claims,ok := myToken.Claims.(jwt.MapClaims);ok && myToken.Valid  {
+	if claims, ok := myToken.Claims.(jwt.MapClaims); ok && myToken.Valid {
 		return claims, nil
 	}
 
 	return nil, err
 }
 
-func ecdsaReleaseToken(u EcdsaUser)(interface{}, error) {
+func ecdsaReleaseToken(u EcdsaUser) (interface{}, error) {
 	claims := EcdsaClaims{
 		UserId: u.Id,
 		StandardClaims: jwt.StandardClaims{
@@ -156,17 +156,17 @@ func getEcdsaKey(keyType int) (*ecdsa.PrivateKey, *ecdsa.PublicKey, error) {
 	var prk *ecdsa.PrivateKey
 	var pub *ecdsa.PublicKey
 
-	var curce elliptic.Curve//椭圆曲线级别类型
+	var curce elliptic.Curve //椭圆曲线级别类型
 
 	switch keyType {
 	case 1:
-		curce=elliptic.P224()
+		curce = elliptic.P224()
 	case 2:
-		curce=elliptic.P256()
+		curce = elliptic.P256()
 	case 3:
-		curce=elliptic.P384()
+		curce = elliptic.P384()
 	case 4:
-		curce=elliptic.P521()
+		curce = elliptic.P521()
 	default:
 		err = errors.New("输入的签名key类型错误！key取值：\n 1:椭圆曲线224 \n 2:椭圆曲线256 \n 3:椭圆曲线384 \n 4:椭圆曲线521 \n")
 		return nil, nil, err
@@ -180,5 +180,5 @@ func getEcdsaKey(keyType int) (*ecdsa.PrivateKey, *ecdsa.PublicKey, error) {
 	}
 	pub = &prk.PublicKey
 
-	return prk,pub,err
+	return prk, pub, err
 }

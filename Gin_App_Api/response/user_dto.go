@@ -3,7 +3,7 @@ package response
 import "Gin-second-study/Gin_App_Api/model"
 
 type UserDto struct {
-	Name string `json:"name"`
+	Name      string `json:"name"`
 	Telephone string `json:"telephone"`
 }
 
@@ -11,7 +11,7 @@ type UserDto struct {
 
 func ToUserDto(user model.User) UserDto {
 	return UserDto{
-		Name: user.Name,
+		Name:      user.Name,
 		Telephone: user.Telephone,
 	}
 }

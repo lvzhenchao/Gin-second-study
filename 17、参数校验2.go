@@ -10,40 +10,40 @@ import (
 //嵌套结构体的校验：dive关键字，代表进入到嵌套结构体进行判断
 
 type ValUser struct {
-	Name string `validate:"required" json:"name"`
-	Age uint8 `validate:"gte=0,lte=130" json:"age"`// 0<=Age<=130
-	Email string `validate:"required,email" json:"email"` //非空，email格式
-	Address []ValAddress `validate:"dive" json:"address"` //嵌套结构体验证
+	Name    string       `validate:"required" json:"name"`
+	Age     uint8        `validate:"gte=0,lte=130" json:"age"`    // 0<=Age<=130
+	Email   string       `validate:"required,email" json:"email"` //非空，email格式
+	Address []ValAddress `validate:"dive" json:"address"`         //嵌套结构体验证
 }
 
 type ValAddress struct {
 	Province string `validate:"required" json:"province"`
-	City string `validate:"required" json:"city"`
-	Phone string `validate:"numeric,len=11" json:"phone"`
+	City     string `validate:"required" json:"city"`
+	Phone    string `validate:"numeric,len=11" json:"phone"`
 }
 
 var validate *validator.Validate
 
-func init()  {
-	validate = validator.New()//初始化（复制）
+func init() {
+	validate = validator.New() //初始化（复制）
 }
 
-func testData(c *gin.Context)  {
+func testData(c *gin.Context) {
 	address := ValAddress{
 		Province: "北京",
-		City: "大兴",
-		Phone: "15910371699",
+		City:     "大兴",
+		Phone:    "15910371699",
 	}
 	user := ValUser{
-		Name: "lzc",
-		Age: 12,
-		Email: "123@qq.com",
-		Address: []ValAddress{address,address},
+		Name:    "lzc",
+		Age:     12,
+		Email:   "123@qq.com",
+		Address: []ValAddress{address, address},
 	}
 	c.JSON(http.StatusOK, user)
 }
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	var user ValUser

@@ -14,8 +14,8 @@ func main() {
 	r.Use(authMiddleware1())
 	r.GET("/auth2", func(c *gin.Context) {
 		resData := struct {
-			Code int	`json:"code"`
-			Msg string `json:"msg"`
+			Code int         `json:"code"`
+			Msg  string      `json:"msg"`
 			Data interface{} `json:"data"`
 		}{http.StatusOK, "验证通过", "ok"}
 		c.JSON(http.StatusOK, resData)
@@ -26,35 +26,34 @@ func main() {
 
 var db *sql.DB
 
-func init()  {
-	db,_ = SqlDB()
+func init() {
+	db, _ = SqlDB()
 }
 
-func SqlDB()(*sql.DB, error)  {
+func SqlDB() (*sql.DB, error) {
 	DB_TYPE := "mysql"
 	DB_HOST := "192.168.33.10"
 	DB_PORT := "3306"
 	DB_USER := "root"
 	DB_NAME := "ginsql"
 	DB_PASSWORD := "BspKCZLRZWeHeaTR"
-	openString  := DB_USER + ":" + DB_PASSWORD + "@tcp(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME
+	openString := DB_USER + ":" + DB_PASSWORD + "@tcp(" + DB_HOST + ":" + DB_PORT + ")/" + DB_NAME
 	db, err := sql.Open(DB_TYPE, openString)
 
 	return db, err
 }
 
-
-func authMiddleware1() gin.HandlerFunc {//动态配置：用户名、密码配置在数据库中
+func authMiddleware1() gin.HandlerFunc { //动态配置：用户名、密码配置在数据库中
 	return func(c *gin.Context) {
 		gate := restgate.New(
 			"X-Auth-key",
 			"X-Auth-Secret",
 			restgate.Database,
 			restgate.Config{ //上下key=>secret
-				DB: db,
-				TableName: "users",
-				Key: []string{"keys"},
-				Secret: []string{"secrets"},
+				DB:                 db,
+				TableName:          "users",
+				Key:                []string{"keys"},
+				Secret:             []string{"secrets"},
 				HTTPSProtectionOff: true, //允许http访问
 			})
 

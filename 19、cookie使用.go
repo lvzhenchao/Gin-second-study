@@ -11,8 +11,7 @@ import (
 var cookieName string
 var cookieValue string
 
-
-func main()  {
+func main() {
 	r := gin.Default()
 
 	//cookie中间件,保存cookie
@@ -27,8 +26,8 @@ func main()  {
 			return
 		}
 
-		cookieName = "cookie_"+name
-		cookieValue = hex.EncodeToString([]byte(cookieName+"value"))
+		cookieName = "cookie_" + name
+		cookieValue = hex.EncodeToString([]byte(cookieName + "value"))
 
 		val, _ := c.Cookie(cookieName)
 		if val == "" {
@@ -36,7 +35,6 @@ func main()  {
 			return
 		}
 		c.String(http.StatusOK, "验证成功，cookie值为%s", val)
-
 
 	})
 

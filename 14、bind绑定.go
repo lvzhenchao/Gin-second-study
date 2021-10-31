@@ -13,10 +13,10 @@ import (
 type Login struct {
 	UserName string `json:"user_name" binding:"required"`
 	Password string `json:"password" binding:"required"`
-	Remark string `json:"remark"`
+	Remark   string `json:"remark"`
 }
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	r.POST("/login", func(c *gin.Context) {
@@ -27,20 +27,20 @@ func main()  {
 
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"msg": "绑定失败",
+				"msg":  "绑定失败",
 				"data": err.Error(),
 			})
 			return
 		}
 		if login.UserName == "user" && login.Password == "123" {
 			c.JSON(http.StatusOK, gin.H{
-				"msg": "登录成功",
+				"msg":  "登录成功",
 				"data": "ok",
 			})
 			return
 		}
 		c.JSON(http.StatusBadRequest, gin.H{
-			"msg": "登录失败",
+			"msg":  "登录失败",
 			"data": "error",
 		})
 		return

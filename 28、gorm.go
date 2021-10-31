@@ -14,24 +14,24 @@ import (
 
 type Product struct {
 	ID             int       `gorm:"primaryKey;autoIncrement" json:"id"`
-	Number         string    `grom:"unique" json:"number"`          //类别
-	Category       string    `gorm:"type:varchar(256);not null" json:"category"`        //分类
-	Name           string    `gorm:"type:varchar(20);not null" json:"name"`            //商品命称
-	MadeIn         string    `gorm:"type:varchar(128);not null" json:"made_in"`         //生产地
-	ProductionTime time.Time `json:"production_time"` //生产时间
+	Number         string    `grom:"unique" json:"number"`                       //类别
+	Category       string    `gorm:"type:varchar(256);not null" json:"category"` //分类
+	Name           string    `gorm:"type:varchar(20);not null" json:"name"`      //商品命称
+	MadeIn         string    `gorm:"type:varchar(128);not null" json:"made_in"`  //生产地
+	ProductionTime time.Time `json:"production_time"`                            //生产时间
 }
 
 //应答客户端的请求
 type GormResponse struct {
-	Code int `json:"code"`
-	Message string `json:"message"`
-	Data interface{} `json:"data"`
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
 var gormDB *gorm.DB
 var gormResponse GormResponse
 
-func init()  {
+func init() {
 	//1、打开数据库
 	sqlStr := "root:BspKCZLRZWeHeaTR@tcp(192.168.33.10:3306)/ginsql?charset=utf8mb4&parseTime=true&&loc=Local"
 	var err error
@@ -49,8 +49,8 @@ func main() {
 	r.POST("gorm/insert", gormInsertData)
 	r.GET("gorm/get", gormGetData)
 	r.GET("gorm/mulget", gormGetMulData)
-	r.PUT("gorm/update", gormUpdate)//修改数据
-	r.DELETE("gorm/delete", gormDelete)//删除数据
+	r.PUT("gorm/update", gormUpdate)    //修改数据
+	r.DELETE("gorm/delete", gormDelete) //删除数据
 
 	r.Run(":9090")
 }
@@ -81,7 +81,7 @@ func gormDelete(c *gin.Context) {
 	}
 	//2、删除
 	tx := gormDB.Where("number=?", number).Delete(&Product{})
-	if tx.RowsAffected >0 {
+	if tx.RowsAffected > 0 {
 		gormResponse.Code = http.StatusOK
 		gormResponse.Message = "删除成功"
 		gormResponse.Data = "ok"
@@ -111,7 +111,7 @@ func gormUpdate(c *gin.Context) {
 
 	var p Product
 	err := c.Bind(&p)
-	if err != nil{
+	if err != nil {
 		gormResponse.Code = http.StatusBadRequest
 		gormResponse.Message = "参数错误"
 		gormResponse.Data = err
@@ -131,7 +131,7 @@ func gormUpdate(c *gin.Context) {
 	}
 	//2、更新
 	tx := gormDB.Model(&Product{}).Where("number=?", p.Number).Updates(&p)
-	if tx.RowsAffected >0 {
+	if tx.RowsAffected > 0 {
 		gormResponse.Code = http.StatusOK
 		gormResponse.Message = "更新成功"
 		gormResponse.Data = "ok"
@@ -221,10 +221,9 @@ func gormInsertData(c *gin.Context) {
 
 	//=================
 
-
 	var p Product
 	err := c.Bind(&p)
-	if err != nil{
+	if err != nil {
 		gormResponse.Code = http.StatusBadRequest
 		gormResponse.Message = "参数错误"
 		gormResponse.Data = "error"
@@ -246,7 +245,6 @@ func gormInsertData(c *gin.Context) {
 	gormResponse.Message = "写入失败"
 	gormResponse.Data = tx
 	c.JSON(http.StatusOK, gormResponse)
-
 
 	//db := gormDB
 	//type result struct {
@@ -293,10 +291,4 @@ func gormInsertData(c *gin.Context) {
 	//tx = tx.Preload("TopicImagesList")
 	//tx.Find(&TopicList).RecordNotFound()
 
-
-
-
-
 }
-
-

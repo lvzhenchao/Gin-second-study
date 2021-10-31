@@ -11,11 +11,11 @@ import (
 //2、证书中间件
 
 type HttpRes struct {
-	Code int `json:"code"`
+	Code   int    `json:"code"`
 	Result string `json:"result"`
 }
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	r.Use(httpsHandler())
@@ -23,26 +23,26 @@ func main()  {
 		fmt.Println(c.Request.Host)
 
 		c.JSON(http.StatusOK, HttpRes{
-			Code : http.StatusOK,
+			Code:   http.StatusOK,
 			Result: "测试成功",
 		})
 	})
 
-	path := "E:/GoPath/src/CA/"//证书路径
-	r.RunTLS(":9090", path+"ca.crt", path+"ca.key")//开启HTTPS服务
+	path := "E:/GoPath/src/CA/"                     //证书路径
+	r.RunTLS(":9090", path+"ca.crt", path+"ca.key") //开启HTTPS服务
 }
 
 func httpsHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		secureMiddleware := secure.New(secure.Options{
-			SSLForceHost:true,//只允许https请求
+			SSLForceHost: true, //只允许https请求
 			//SSLHost:"",//http到https的重定向
-			STSSeconds:1536000,//时效
-			STSIncludeSubdomains:  true,
-			STSPreload:            true,//sts预加载
-			FrameDeny:             true,//页面不允许frame中展示
-			ContentTypeNosniff:    true,//禁用浏览器的类型猜测行为，防止基于MIME类型混淆的攻击
-			BrowserXssFilter:      true,//启用XSS保护,并在检查到XSS攻击是，停止渲染页面
+			STSSeconds:           1536000, //时效
+			STSIncludeSubdomains: true,
+			STSPreload:           true, //sts预加载
+			FrameDeny:            true, //页面不允许frame中展示
+			ContentTypeNosniff:   true, //禁用浏览器的类型猜测行为，防止基于MIME类型混淆的攻击
+			BrowserXssFilter:     true, //启用XSS保护,并在检查到XSS攻击是，停止渲染页面
 		})
 
 		err := secureMiddleware.Process(c.Writer, c.Request)

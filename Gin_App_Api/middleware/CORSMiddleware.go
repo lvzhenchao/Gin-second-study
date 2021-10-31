@@ -20,7 +20,7 @@ func CORSMiddleware() gin.HandlerFunc { //CORS是跨源资源分享（Cross-Orig
 		ctx.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		if ctx.Request.Method == http.MethodOptions {
 			ctx.AbortWithStatus(200)
-		}else {
+		} else {
 			ctx.Next()
 		}
 	}

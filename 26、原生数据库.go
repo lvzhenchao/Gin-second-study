@@ -8,10 +8,10 @@ import (
 	"net/http"
 )
 
-var sqlDb *sql.DB //数据库连接db
+var sqlDb *sql.DB           //数据库连接db
 var sqlResponse SqlResponse //响应client的数据
 
-func init()  {
+func init() {
 	//1、打开数据库
 	//parseTime 时间格式转换
 	sqlStr := "root:BspKCZLRZWeHeaTR@tcp(192.168.33.10:3306)/ginsql?charset=utf8&parseTime=true&&loc=Local"
@@ -32,26 +32,26 @@ func init()  {
 
 //客户端提交的数据
 type SqlUser struct {
-	Name string `json:"name"`
-	Age int	`json:"age"`
+	Name    string `json:"name"`
+	Age     int    `json:"age"`
 	Address string `json:"address"`
 }
 
 //服务端的响应
 type SqlResponse struct {
-	Code int `json:"code"`
-	Message string `json:"message"`
-	Data interface{} `json:"data"`
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
-func main()  {
+func main() {
 	r := gin.Default()
 
-	r.POST("sql/insert", insertData)//添加数据
-	r.GET("sql/get", getData)//查询单条数据
-	r.GET("sql/mulget", getMulData)//查询多条数据
-	r.PUT("sql/update", updateData)//更新数据
-	r.DELETE("sql/delete", deleteData)//删除数据
+	r.POST("sql/insert", insertData)   //添加数据
+	r.GET("sql/get", getData)          //查询单条数据
+	r.GET("sql/mulget", getMulData)    //查询多条数据
+	r.PUT("sql/update", updateData)    //更新数据
+	r.DELETE("sql/delete", deleteData) //删除数据
 
 	r.Run(":9090")
 }
@@ -62,7 +62,7 @@ func deleteData(c *gin.Context) {
 	var count int
 	sqlStr := "select count(*) from user where name = ?"
 	err := sqlDb.QueryRow(sqlStr, name).Scan(&count)
-	if count <= 0 || err !=nil {
+	if count <= 0 || err != nil {
 		sqlResponse.Code = http.StatusBadRequest
 		sqlResponse.Message = "数据不存在"
 		sqlResponse.Data = "error"
@@ -72,7 +72,7 @@ func deleteData(c *gin.Context) {
 
 	delStr := "delete from user where name=?"
 	ret, err := sqlDb.Exec(delStr, name)
-	if err !=nil {
+	if err != nil {
 		sqlResponse.Code = http.StatusBadRequest
 		sqlResponse.Message = "删除失败"
 		sqlResponse.Data = "error"
@@ -83,7 +83,7 @@ func deleteData(c *gin.Context) {
 	sqlResponse.Message = "删除成功"
 	sqlResponse.Data = "OK"
 	c.JSON(http.StatusOK, sqlResponse)
-	fmt.Println(ret.LastInsertId())//打印结果
+	fmt.Println(ret.LastInsertId()) //打印结果
 }
 
 func updateData(c *gin.Context) {
@@ -111,7 +111,7 @@ func updateData(c *gin.Context) {
 	sqlResponse.Message = "更新成功"
 	sqlResponse.Data = "OK"
 	c.JSON(http.StatusOK, sqlResponse)
-	fmt.Println(ret.LastInsertId())//打印结果
+	fmt.Println(ret.LastInsertId()) //打印结果
 }
 
 func getMulData(c *gin.Context) {
@@ -183,37 +183,10 @@ func insertData(c *gin.Context) {
 		return
 	}
 
-
 	sqlResponse.Code = http.StatusOK
 	sqlResponse.Message = "写入成功"
 	sqlResponse.Data = "OK"
 	c.JSON(http.StatusOK, sqlResponse)
-	fmt.Println(result.LastInsertId())//打印结果
-
-
-
+	fmt.Println(result.LastInsertId()) //打印结果
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

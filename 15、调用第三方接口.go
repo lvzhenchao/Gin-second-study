@@ -21,28 +21,25 @@ type UserAPI struct {
 
 //第三方返回的结果
 type TempData struct {
-	Msg string `json:"msg"`
+	Msg  string `json:"msg"`
 	Data string `json:"data"`
 }
 
 //客户端提交的数据
 type ClientRequest struct {
-	UserName string `json:"user_name"`
-	Password string `json:"password"`
-	other interface{} `json:"other"`
-
+	UserName string      `json:"user_name"`
+	Password string      `json:"password"`
+	other    interface{} `json:"other"`
 }
 
 //返回客户端的数据
 type ClientResponse struct {
-	Code int `json:"code"`
-	Msg string `json:"msg"`
+	Code int         `json:"code"`
+	Msg  string      `json:"msg"`
 	Data interface{} `json:"data"`
 }
 
-
-
-func main()  {
+func main() {
 	//单独请求测试
 	//testAPI()
 
@@ -53,7 +50,7 @@ func main()  {
 	r.Run(":9091")
 }
 
-func getOtherAPI(c *gin.Context)  {
+func getOtherAPI(c *gin.Context) {
 	var requestData ClientRequest
 	var response ClientResponse
 	err := c.Bind(&requestData)
@@ -67,7 +64,7 @@ func getOtherAPI(c *gin.Context)  {
 
 	url := "http://127.0.0.1:9090/login"
 
-	user := UserAPI{requestData.UserName,requestData.Password}
+	user := UserAPI{requestData.UserName, requestData.Password}
 
 	data, err := getRestfulAPI(url, user, "application/json")
 	fmt.Println(data, err)
@@ -85,9 +82,9 @@ func getOtherAPI(c *gin.Context)  {
 
 }
 
-func testAPI(){
+func testAPI() {
 	url := "http://127.0.0.1:9090/login"
-	user := UserAPI{"user","1232"}
+	user := UserAPI{"user", "1232"}
 
 	data, err := getRestfulAPI(url, user, "application/json")
 	fmt.Println(data, err)
@@ -99,7 +96,7 @@ func testAPI(){
 	fmt.Println(temp.Msg, temp.Data)
 }
 
-func getRestfulAPI(url string, data interface{}, contentType string) ([]byte, error)  {
+func getRestfulAPI(url string, data interface{}, contentType string) ([]byte, error) {
 	//创建调用api接口的client
 	client := http.Client{Timeout: 5 * time.Second}
 

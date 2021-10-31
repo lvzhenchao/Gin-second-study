@@ -1,7 +1,7 @@
 package main
 
 import (
-	_"Gin-second-study/18_swagger/docs"
+	_ "Gin-second-study/18_swagger/docs"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -15,12 +15,12 @@ type User struct {
 }
 
 type Response struct {
-	code int `json:"code"`
-	Msg string `json:"msg"`
+	code int    `json:"code"`
+	Msg  string `json:"msg"`
 	Data string `json:"data"`
 }
 
-func main()  {
+func main() {
 	r := gin.Default()
 
 	//swagger中间件主要的作用是：方便前端对接口进行调试。不影响接口的实际功能
@@ -52,7 +52,7 @@ func register(c *gin.Context) {
 
 	res := Response{
 		code: http.StatusOK,
-		Msg : "注册成功",
+		Msg:  "注册成功",
 		Data: "ok",
 	}
 	c.JSON(http.StatusOK, res)
@@ -75,5 +75,5 @@ func login(c *gin.Context) {
 	res.code = http.StatusOK
 	res.Msg = "登录成功"
 	res.Data = "ok"
-	c.JSON(http.StatusOK,res)
+	c.JSON(http.StatusOK, res)
 }

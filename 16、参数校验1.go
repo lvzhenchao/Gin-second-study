@@ -14,28 +14,28 @@ import (
 //复杂校验：专门库 go-playground/validator
 
 type UserInfo struct {
-	Id string `validate:"uuid" json:"id"`//设置成uuid,通用识别码
-	Name string `validate:"checkName" json:"name"`//自定义了一个规则
-	Age uint8 `validate:"min=0,max=130" json:"age"`
+	Id   string `validate:"uuid" json:"id"`        //设置成uuid,通用识别码
+	Name string `validate:"checkName" json:"name"` //自定义了一个规则
+	Age  uint8  `validate:"min=0,max=130" json:"age"`
 }
 
 //设定全局变量校验
 var valildate *validator.Validate
 
-func init()  {//对校验进行初始化
+func init() { //对校验进行初始化
 	valildate = validator.New()
 	valildate.RegisterValidation("checkName", checkNameFunc)
 }
 
 func checkNameFunc(f validator.FieldLevel) bool {
-	count := utf8.RuneCountInString(f.Field().String())//一个汉字获取到为长度为1
+	count := utf8.RuneCountInString(f.Field().String()) //一个汉字获取到为长度为1
 	if count >= 2 && count <= 12 {
 		return true
 	}
 	return false
 }
 
-func main()  {
+func main() {
 	uuid := uuid.Must(uuid.NewV4(), nil)
 	fmt.Println("uuid的值：", uuid)
 

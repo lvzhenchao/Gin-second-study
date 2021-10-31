@@ -14,25 +14,24 @@ var xormResponse XormResponse
 
 //定义结构体（xorm支持双向映射）：没有表，会进行创建
 type Stu struct {
-	Id int64 `xorm:"pk autoincr" json:"id"`
-	StuNum string `xorm:"unique" json:"stu_num"`
-	Name string `json:"name"`
-	Age int `json:"age"`
+	Id      int64     `xorm:"pk autoincr" json:"id"`
+	StuNum  string    `xorm:"unique" json:"stu_num"`
+	Name    string    `json:"name"`
+	Age     int       `json:"age"`
 	Created time.Time `xorm:"created" json:"created"`
 	Updated time.Time `xorm:"updated" json:"updated"`
 }
 
 //应答客户端的请求
 type XormResponse struct {
-	Code int `json:"code"`
-	Message string `json:"message"`
-	Data interface{} `json:"data"`
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
-
 
 //注意变量设定 runtime error: invalid memory address or nil pointer dereference
 
-func init()  {
+func init() {
 	//1、打开数据库
 	sqlStr := "root:BspKCZLRZWeHeaTR@tcp(192.168.33.10:3306)/ginsql?charset=utf8&parseTime=true&&loc=Local"
 	var err error
@@ -48,18 +47,15 @@ func init()  {
 	}
 }
 
-
-func main()  {
-	r:=gin.Default()
+func main() {
+	r := gin.Default()
 
 	//数据库的增删改查
-	r.POST("xorm/insert", xormInsertData)//新增数据
-	r.GET("xorm/get", xormGetData)//获取单条数据
-	r.GET("xorm/mulget", xormGetMulData)//获取单条数据
-	r.PUT("xorm/update", xormUpdate)//修改数据
-	r.DELETE("xorm/delete", xormDelete)//删除数据
-
-
+	r.POST("xorm/insert", xormInsertData) //新增数据
+	r.GET("xorm/get", xormGetData)        //获取单条数据
+	r.GET("xorm/mulget", xormGetMulData)  //获取单条数据
+	r.PUT("xorm/update", xormUpdate)      //修改数据
+	r.DELETE("xorm/delete", xormDelete)   //删除数据
 
 	r.Run(":9090")
 }
@@ -88,13 +84,13 @@ func xormDelete(c *gin.Context) {
 	xormResponse.Message = "删除成功"
 	xormResponse.Data = "OK"
 	c.JSON(http.StatusOK, xormResponse)
-	fmt.Println(affected)//打印结果
+	fmt.Println(affected) //打印结果
 }
 
 func xormUpdate(c *gin.Context) {
 	var s Stu
 	err := c.Bind(&s)
-	if err != nil{
+	if err != nil {
 		xormResponse.Code = http.StatusBadRequest
 		xormResponse.Message = "参数错误"
 		xormResponse.Data = "error"
@@ -113,7 +109,7 @@ func xormUpdate(c *gin.Context) {
 		return
 	}
 	//再修改
-	affected, err := x.Where("stu_num=?", s.StuNum).Update(&Stu{Name:s.Name,Age:s.Age})
+	affected, err := x.Where("stu_num=?", s.StuNum).Update(&Stu{Name: s.Name, Age: s.Age})
 	if err != nil || affected <= 0 {
 		xormResponse.Code = http.StatusBadRequest
 		xormResponse.Message = "修改失败"
@@ -125,7 +121,7 @@ func xormUpdate(c *gin.Context) {
 	xormResponse.Message = "更新成功"
 	xormResponse.Data = "OK"
 	c.JSON(http.StatusOK, xormResponse)
-	fmt.Println(affected)//打印结果
+	fmt.Println(affected) //打印结果
 }
 
 func xormGetMulData(c *gin.Context) {
@@ -167,7 +163,7 @@ func xormGetData(c *gin.Context) {
 func xormInsertData(c *gin.Context) {
 	var s Stu
 	err := c.Bind(&s)
-	if err != nil{
+	if err != nil {
 		xormResponse.Code = http.StatusBadRequest
 		xormResponse.Message = "参数错误"
 		xormResponse.Data = "error"
@@ -177,7 +173,7 @@ func xormInsertData(c *gin.Context) {
 
 	fmt.Println(s)
 	affected, err := x.Insert(s)
-	if err!= nil || affected <= 0 {
+	if err != nil || affected <= 0 {
 		fmt.Printf("插入错误：err:%v\n", err)
 		xormResponse.Code = http.StatusBadRequest
 		xormResponse.Message = "写入失败"
@@ -190,6 +186,6 @@ func xormInsertData(c *gin.Context) {
 	xormResponse.Message = "写入成功"
 	xormResponse.Data = "OK"
 	c.JSON(http.StatusOK, xormResponse)
-	fmt.Println(affected)//打印结果
+	fmt.Println(affected) //打印结果
 
 }

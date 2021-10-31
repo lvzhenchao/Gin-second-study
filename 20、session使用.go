@@ -34,8 +34,8 @@ func main1() {
 	r.Run(":8080")
 }
 
-func main()  {
-	r:=gin.Default()
+func main() {
+	r := gin.Default()
 
 	//添加中间件, 服务器私有的信息
 	store := cookie.NewStore([]byte("secret"))
@@ -49,8 +49,8 @@ func main()  {
 			return
 		}
 
-		sessionName = "session_"+name
-		sessionValue = "session_value_"+name
+		sessionName = "session_" + name
+		sessionValue = "session_value_" + name
 		session := sessions.Default(c)
 		sessionData := session.Get(sessionName)
 		if sessionData != sessionValue {
@@ -65,10 +65,9 @@ func main()  {
 			return
 
 		}
-		c.JSON(http.StatusOK, "访问成功，您的sessionData:"+sessionData.(string))//断言成字符串类型
+		c.JSON(http.StatusOK, "访问成功，您的sessionData:"+sessionData.(string)) //断言成字符串类型
 
 	})
-
 
 	r.Run(":9090")
 }

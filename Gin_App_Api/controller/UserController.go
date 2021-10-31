@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-func Register(ctx *gin.Context)  {
+func Register(ctx *gin.Context) {
 	var requestUser model.User
 	ctx.Bind(&requestUser)
 
@@ -19,11 +19,11 @@ func Register(ctx *gin.Context)  {
 	telephone := requestUser.Telephone
 	password := requestUser.Password
 	if len(telephone) != 11 {
-		response.Response(ctx, http.StatusUnprocessableEntity,422, nil, "手机号必须为11位")
+		response.Response(ctx, http.StatusUnprocessableEntity, 422, nil, "手机号必须为11位")
 		return
 	}
 	if len(password) < 6 {
-		response.Response(ctx, http.StatusUnprocessableEntity,422, nil, "密码不能少于6位")
+		response.Response(ctx, http.StatusUnprocessableEntity, 422, nil, "密码不能少于6位")
 		return
 	}
 	if name == "" {
@@ -43,18 +43,18 @@ func Register(ctx *gin.Context)  {
 	}
 
 	newUser := model.User{
-		Name: name,
-		Telephone:telephone,
-		Password:string(hassPassword),//byte转为字符串类型
+		Name:      name,
+		Telephone: telephone,
+		Password:  string(hassPassword), //byte转为字符串类型
 	}
-	common.DB.Create(&newUser)//新增用户
+	common.DB.Create(&newUser) //新增用户
 
 	//分发token
 	token, err := common.ReleaseToken(newUser)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"code": 500,
-			"msg" : "系统异常",
+			"msg":  "系统异常",
 		})
 		return
 	}
@@ -66,7 +66,7 @@ func Register(ctx *gin.Context)  {
 
 }
 
-func Login(ctx *gin.Context)  {
+func Login(ctx *gin.Context) {
 	var requestUser model.User
 	ctx.Bind(&requestUser)
 
@@ -74,11 +74,11 @@ func Login(ctx *gin.Context)  {
 	telephone := requestUser.Telephone
 	password := requestUser.Password
 	if len(telephone) != 11 {
-		response.Response(ctx, http.StatusUnprocessableEntity,422, nil, "手机号必须为11位")
+		response.Response(ctx, http.StatusUnprocessableEntity, 422, nil, "手机号必须为11位")
 		return
 	}
 	if len(password) < 6 {
-		response.Response(ctx, http.StatusUnprocessableEntity,422, nil, "密码不能少于6位")
+		response.Response(ctx, http.StatusUnprocessableEntity, 422, nil, "密码不能少于6位")
 		return
 	}
 
@@ -101,7 +101,7 @@ func Login(ctx *gin.Context)  {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"code": 500,
-			"msg" : "系统异常",
+			"msg":  "系统异常",
 		})
 		return
 	}
@@ -112,10 +112,10 @@ func Login(ctx *gin.Context)  {
 	}, "登录成功")
 }
 
-func Info(ctx *gin.Context)  {
-	user, _ := ctx.Get("user")//空接口
+func Info(ctx *gin.Context) {
+	user, _ := ctx.Get("user") //空接口
 	response.Success(ctx, gin.H{
-		"user": response.ToUserDto(user.(model.User)),//将空接口断言成结构体
+		"user": response.ToUserDto(user.(model.User)), //将空接口断言成结构体
 	}, "响应成功")
 	return
 }
