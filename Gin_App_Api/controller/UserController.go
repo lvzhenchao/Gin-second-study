@@ -35,6 +35,7 @@ func Register(ctx *gin.Context)  {
 	}
 
 	//创建用户
+	//返回密码的hash值（对用户密码进行二次处理，防止系统管理人员利用）
 	hassPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		response.Response(ctx, http.StatusInternalServerError, 500, nil, "加密错误")
@@ -69,7 +70,7 @@ func Login(ctx *gin.Context)  {
 	var requestUser model.User
 	ctx.Bind(&requestUser)
 
-	name := requestUser.Name
+	//name := requestUser.Name
 	telephone := requestUser.Telephone
 	password := requestUser.Password
 	if len(telephone) != 11 {
