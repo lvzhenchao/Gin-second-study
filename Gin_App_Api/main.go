@@ -14,7 +14,7 @@ import (
 //注意区别
 
 func main() {
-	IninConfig()    //加载配置项
+	InitConfig()    //加载配置项
 	common.InitDB() //初始化数据库（只初始化一次）
 	r := gin.Default()
 
@@ -29,7 +29,7 @@ func main() {
 
 }
 
-func IninConfig() {
+func InitConfig() {
 	workDir, _ := os.Getwd()                 //获取目录对应的路径
 	viper.SetConfigName("application")       //配置文件名
 	viper.SetConfigType("yml")               //配置文件类型
